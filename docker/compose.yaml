@@ -1,0 +1,18 @@
+####
+# 要注意 localですでに5432が使われている場合は5435などに変更する
+# 何かのhands onで使用し残っている場合がある　注意
+####
+version: "3"
+services:  
+  company:
+    image: postgres:14
+    container_name: company
+    env_file:
+      - ../.env
+    environment:
+      TZ: "Asia/Tokyo"
+    restart: always
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data

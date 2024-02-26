@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# プロジェクトセットアップ手順
 
-## Getting Started
+以下の手順に従って、Dockerの設定とPrismaを用いたデータベースの初期化を行ってください。
 
-First, run the development server:
+## 前提条件
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.jsがインストールされていること
+- Dockerがインストールされていること
+- npmがインストールされていること
+
+## 1. Dockerのセットアップ
+
+プロジェクトにはDockerが必要です。Dockerが未インストールの場合は、[Docker公式サイト](https://www.docker.com/get-started)からインストールしてください。
+
+
+## 2. Docker環境の起動
+
+以下のコマンドを実行して、Dockerコンテナを起動します。データベースを停止し、再起動することで、環境を初期化します。
+
+```
+cd docker
+make db-down
+make db-up
+cd ../
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 3. Prismaのセットアップ
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Prismaを用いてデータベースのマイグレーションとクライアントの生成を行います。これには、まずPrisma CLIをインストールする必要があります。
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```
+npm install bun //bunがインストールされていない場合
+bun install
+npm install prisma --save-dev
+npm install @prisma/client
+```
 
-## Learn More
+次に、データベースのマイグレーションを実行します。
 
-To learn more about Next.js, take a look at the following resources:
+```
+npx prisma migrate dev --name init
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+最後に、Prismaクライアントを生成します。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+npx prisma generate --schema prisma/schema.prisma
+```
 
-## Deploy on Vercel
+これで、プロジェクトのセットアップが完了しました。必要な環境が整い、データベースが初期化されました。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 4. プロジェクトの起動
+```
+bun dev
+bun studio
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 5. アクセス
+http://localhost:3000/sign-up にアクセスしてください。
+データ入力後、http://localhost:5555 にアクセスしてデータの確認を行ってください。
+```
