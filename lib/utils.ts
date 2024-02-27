@@ -1,5 +1,5 @@
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -7,5 +7,5 @@ export function cn(...inputs: ClassValue[]) {
 
 export const handleError = (error: unknown) => {
   console.error(error);
-  throw new Error(typeof error === 'string' ? error : JSON.stringify(error));
+  throw new Error(typeof error === "string" ? error : JSON.stringify(error));
 };

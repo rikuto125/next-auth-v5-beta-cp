@@ -12,7 +12,6 @@
 
 プロジェクトにはDockerが必要です。Dockerが未インストールの場合は、[Docker公式サイト](https://www.docker.com/get-started)からインストールしてください。
 
-
 ## 2. Docker環境の起動
 
 以下のコマンドを実行して、Dockerコンテナを起動します。データベースを停止し、再起動することで、環境を初期化します。
@@ -49,13 +48,29 @@ npx prisma generate --schema prisma/schema.prisma
 
 これで、プロジェクトのセットアップが完了しました。必要な環境が整い、データベースが初期化されました。
 
-## 4. プロジェクトの起動
+## 4. jwtのセットアップ
+
+以下のコマンドを実行して、jwtのシークレットキーを生成してください。
+envファイルに記載されているJWT_SECRETにシークレットキーを記載してください。
+
+```
+openssl rand -base64 32
+```
+
+## 5. プロジェクトの起動
+
 ```
 bun dev
 bun studio
 ```
 
-## 5. アクセス
+## 6. アクセス
+
 http://localhost:3000/sign-up にアクセスしてください。
 データ入力後、http://localhost:5555 にアクセスしてデータの確認を行ってください。
+
+## 7. shadcn installコマンド
+
+```
+bunx --bun shadcn-ui@latest add <欲しいcomponent名>
 ```

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -11,29 +11,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { signUpSchema } from '@/schemas';
-import { FormError } from '@/components/form-error';
-import { useState, useTransition } from 'react';
-import { signUp } from '@/actions/sign-up';
-import { toast } from 'sonner';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { signUpSchema } from "@/schemas";
+import { FormError } from "@/components/form-error";
+import { useState, useTransition } from "react";
+import { signUp } from "@/actions/email/sign-up";
+import { toast } from "sonner";
+import Link from "next/link";
 
 export function SignUpForm() {
-  const [error, setError] = useState<string | undefined>('');
+  const [error, setError] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      nickname: '',
-      email: '',
-      password: '',
+      companyName: "",
+      email: "",
+      password: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof signUpSchema>) => {
-    setError('');
+    setError("");
 
     startTransition(async () => {
       const result = await signUp(values);
@@ -49,15 +50,15 @@ export function SignUpForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name='nickname'
+          name="companyName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>ニックネーム</FormLabel>
+              <FormLabel>会社名</FormLabel>
               <FormControl>
-                <Input placeholder='shadcn' {...field} />
+                <Input placeholder="shadcn" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -65,12 +66,12 @@ export function SignUpForm() {
         />
         <FormField
           control={form.control}
-          name='email'
+          name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>メールアドレス</FormLabel>
               <FormControl>
-                <Input placeholder='shadcn@example.com' {...field} />
+                <Input placeholder="shadcn@example.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -78,21 +79,23 @@ export function SignUpForm() {
         />
         <FormField
           control={form.control}
-          name='password'
+          name="password"
           render={({ field }) => (
             <FormItem>
               <FormLabel>パスワード</FormLabel>
               <FormControl>
-                <Input placeholder='1234567' {...field} />
+                <Input placeholder="1234567" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormError message={error} />
-        <Button type='submit' disabled={isPending}>
-          アカウントを作成
-        </Button>
+        <div className="flex justify-center p-4">
+          <Button type="submit" disabled={isPending}>
+            アカウントを作成
+          </Button>
+        </div>
       </form>
     </Form>
   );

@@ -3,7 +3,7 @@
 # 何かのhands onで使用し残っている場合がある　注意
 ####
 version: "3"
-services:  
+services:
   company:
     image: postgres:14
     container_name: company

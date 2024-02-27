@@ -1,7 +1,7 @@
 datasource db {
   provider     = "postgresql"
   // url          = env("DATABASE_URL")
-  url         = env("DATABASE_URL")
+  url         = "postgresql://user:password@localhost:5435/company"
   relationMode = "prisma"
 }
 
@@ -22,4 +22,8 @@ model User {
   image         String?
   password      String?
   role          UserRole @default(USER)
+  confirmed     Boolean  @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
 }

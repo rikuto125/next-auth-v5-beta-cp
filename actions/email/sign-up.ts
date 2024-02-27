@@ -1,15 +1,15 @@
-'use server';
+"use server";
 
-import { signUpSchema } from '@/schemas';
-import { ActionsResult } from '@/types/ActionsResult';
-import { z } from 'zod';
-import bcrypt from 'bcryptjs';
-import { getUserByEmail } from '@/db/user';
-import { db } from '@/lib/db';
-import { handleError } from '@/lib/utils';
+import { signUpSchema } from "@/schemas";
+import { ActionsResult } from "@/types/ActionsResult";
+import { z } from "zod";
+import bcrypt from "bcryptjs";
+import { getUserByEmail } from "@/db/user";
+import { db } from "@/lib/db";
+import { handleError } from "@/lib/utils";
 
 export const signUp = async (
-  values: z.infer<typeof signUpSchema>
+  values: z.infer<typeof signUpSchema>,
 ): Promise<ActionsResult> => {
   const validatedFields = signUpSchema.safeParse(values);
 
@@ -22,7 +22,7 @@ export const signUp = async (
     };
   }
 
-  const { email, password, nickname } = validatedFields.data;
+  const { email, password, companyName } = validatedFields.data;
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -33,7 +33,7 @@ export const signUp = async (
       return {
         isSuccess: false,
         error: {
-          message: 'このメールアドレスは既に登録されています。',
+          message: "このメールアドレスは既に登録されています。",
         },
       };
     }
@@ -45,7 +45,7 @@ export const signUp = async (
 
     await db.user.create({
       data: {
-        name: nickname,
+        name: companyName,
         email,
         password: hashedPassword,
       },
@@ -53,7 +53,7 @@ export const signUp = async (
 
     return {
       isSuccess: true,
-      message: 'サインアップに成功しました。',
+      message: "サインアップに成功しました。本部の最終確認をお待ちください。",
     };
   } catch (error) {
     handleError(error);
@@ -61,7 +61,7 @@ export const signUp = async (
     return {
       isSuccess: false,
       error: {
-        message: 'サインアップに失敗しました。',
+        message: "サインアップに失敗しました。",
       },
     };
   }
